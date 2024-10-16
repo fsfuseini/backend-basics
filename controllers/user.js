@@ -1,6 +1,8 @@
 import { registerUserValidator } from "../validators/user.js"; // Import validator
 import { UserModel } from "../models/user.js"; // Import model
-import { hashSync } from "bcryptjs";
+import bcrypt from "bcryptjs"; // Import bcrypt
+
+
 export const registerUser = async (req, res, next) => {
   try {
     // Validate user input
@@ -14,7 +16,7 @@ export const registerUser = async (req, res, next) => {
       return res.status(409).json("User already exists");
     }
     // Hash password
-    const hashedPassword = hashSync(value.password, 10);
+    const hashedPassword = bcrypt.hashSync(value.password, 10);
     // Save user
     await UserModel.create({ ...value, password: hashedPassword });
     // Send user confirmation email
