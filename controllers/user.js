@@ -60,6 +60,10 @@ export const loginUser = async (req, res, next) => {
     }
 };
 
+
+export const getProfile = (req, res, next) => {
+    res.json("User Profile");
+}
 export const logoutUser = (req, res, next) => {
     res.json("User Logged Out");
 };

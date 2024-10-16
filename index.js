@@ -9,7 +9,7 @@ import cors from "cors";
 const app = express();
 
 // Connect to database
-await mongoose.connect(process.env.MONGODB_URI);
+await mongoose.connect(process.env.MONGO_URI);
 
 // Define routes
 // app.get('/hello', function (req, res, next) {

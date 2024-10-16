@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { registerUser, loginUser, logoutUser, updateProfile } from "../controllers/user";
+import { registerUser, loginUser, logoutUser, updateProfile, getProfile } from "../controllers/user.js";
+import { userAvatarUpload } from "../middlewares/upload.js";
 
 const userRouter = Router();
 
@@ -9,8 +10,8 @@ userRouter.post("/users/login", loginUser);
 
 userRouter.post("/users/logout", logoutUser);
 
-userRouter.post("/users/profile", updateProfile);
+userRouter.post("/users/me", userAvatarUpload.single("avatar"), updateProfile);
 
-
+userRouter.get("/users/me",getProfile);
 
 export default userRouter;
