@@ -1,6 +1,7 @@
 import {
     registerUserValidator,
     loginUserValidator,
+    updateProfileValidator,
 } from "../validators/user.js"; // Import validator
 import { UserModel } from "../models/user.js"; // Import model
 import bcrypt from "bcryptjs"; // Import bcrypt
@@ -61,13 +62,32 @@ export const loginUser = async (req, res, next) => {
 };
 
 
-export const getProfile = (req, res, next) => {
-    res.json("User Profile");
+export const getProfile = async (req, res, next) => {
+    try {
+        // Find authenticated user from database
+        const user = await UserModel
+            .findById(req.auth.id)
+            .select({ password: false });
+
+        // Respond to request with success message
+        res.json(user);
+    } catch (error) {
+        next(error);
+    }
 }
 export const logoutUser = (req, res, next) => {
     res.json("User Logged Out");
 };
 
 export const updateProfile = (req, res, next) => {
-    res.json("Profile Updated");
+    try {
+        //    Validate user input
+        const { error, value } = updateProfileValidator.validate(req.body);
+        if (error) {
+            return res.status(422).json(error);
+        }
+        
+   } catch (error) {
+    next(error);
+   }
 };
