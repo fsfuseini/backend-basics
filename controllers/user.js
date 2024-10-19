@@ -6,6 +6,7 @@ import {
 import { UserModel } from "../models/user.js"; // Import model
 import bcrypt from "bcryptjs"; // Import bcrypt
 import jwt from "jsonwebtoken"; // Import jwt
+import { transporter } from "../utils/mail.js";
 
 export const registerUser = async (req, res, next) => {
     try {
@@ -24,6 +25,12 @@ export const registerUser = async (req, res, next) => {
         // Save user
         await UserModel.create({ ...value, password: hashedPassword });
         // Send user confirmation email
+        await transporter.sendMail({
+            from: process.env.MAIL_FROM,
+            to: value.email,
+            subject: "Account Registration",
+            text: "Thank you for registering!",
+        })
         // Respond to request with success message
         res.json("User Registered");
     } catch (error) {
